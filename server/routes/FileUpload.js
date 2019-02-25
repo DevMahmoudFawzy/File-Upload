@@ -1,19 +1,22 @@
 const express = require('express');
 const IncomingForm = require('formidable').IncomingForm;
+const fs = require('fs');
+
 const router = express.Router();
 
 router.post('', (req, res) => {
-    const form = new IncomingForm();
+    var form = new IncomingForm();
+    let readStream;
     form.on('file', (field, file) => {
-        // Do something with the file
-        // e.g. save it to the database
-        // you can access it using file.path
+      // Do something with the file
+      // e.g. save it to the database
+      // you can access it using file.path
+      console.log('file', file.name);
+      readStream = fs.createReadStream(file.path);
     });
-
     form.on('end', () => {
-        res.json();
+      res.json();
     });
-    
     form.parse(req);
 });
 
